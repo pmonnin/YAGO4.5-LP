@@ -1,19 +1,17 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-import SPARQLWrapper
 import argparse
 import matplotlib.pyplot
 import seaborn
 import tqdm
 
+from utils import yago_utils
 from utils.logging_utils import get_logger
+from utils.yago_utils import get_yago_endpoint
 
 
 def compute_node_degree(node_uri: str) -> int:
-    endpoint = SPARQLWrapper.SPARQLWrapper(
-        "https://yago-knowledge.org/sparql/query"
-    )
-    endpoint.setReturnFormat(SPARQLWrapper.JSON)
+    endpoint = get_yago_endpoint()
 
     degree = 0
 
@@ -56,15 +54,12 @@ def main():
     logger = get_logger(args.log_level)
 
     logger.info("get_target_nodes_degree_distribution: start")
-    logger.info(f"SPARQL endpoint: https://yago-knowledge.org/sparql/query")
+    logger.info(f"SPARQL endpoint: {yago_utils.YAGO_ENDPOINT}")
     logger.info(f"Shape URI: {args.shape_uri}")
     logger.info(f"Output histogram: {args.output_hist}")
     logger.info(f"Output ECDF: {args.output_ecdf}")
 
-    yago_endpoint = SPARQLWrapper.SPARQLWrapper(
-        "https://yago-knowledge.org/sparql/query"
-    )
-    yago_endpoint.setReturnFormat(SPARQLWrapper.JSON)
+    yago_endpoint = get_yago_endpoint()
 
     target_node_degrees = []
 

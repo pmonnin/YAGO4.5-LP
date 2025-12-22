@@ -1,9 +1,10 @@
-import SPARQLWrapper
 import argparse
 import csv
 import tqdm
 
+from utils import yago_utils
 from utils.logging_utils import get_logger
+from utils.yago_utils import get_yago_endpoint
 
 
 def main():
@@ -16,13 +17,10 @@ def main():
     logger = get_logger(args.log_level)
 
     logger.info("get_shapes_info: start")
-    logger.info(f"SPARQL endpoint: https://yago-knowledge.org/sparql/query")
+    logger.info(f"SPARQL endpoint: {yago_utils.YAGO_ENDPOINT}")
     logger.info(f"Output file: {args.output}")
 
-    yago_endpoint = SPARQLWrapper.SPARQLWrapper(
-        "https://yago-knowledge.org/sparql/query"
-    )
-    yago_endpoint.setReturnFormat(SPARQLWrapper.JSON)
+    yago_endpoint = get_yago_endpoint()
 
     shapes = []
 

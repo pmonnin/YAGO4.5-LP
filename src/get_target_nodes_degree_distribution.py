@@ -7,36 +7,7 @@ import tqdm
 
 from utils import yago_utils
 from utils.logging_utils import get_logger
-from utils.yago_utils import get_yago_endpoint
-
-
-def compute_node_degree(node_uri: str) -> int:
-    endpoint = get_yago_endpoint()
-
-    degree = 0
-
-    # Outgoing edges
-    endpoint.setQuery(f"""
-        SELECT DISTINCT ?p ?o
-        WHERE {{
-            <{node_uri}> ?p ?o .
-            FILTER(ISURI(?o)) .
-        }}
-    """)
-    results = endpoint.queryAndConvert()
-    degree += len(results["results"]["bindings"])
-
-    # Incoming edges
-    endpoint.setQuery(f"""
-        SELECT DISTINCT ?s ?p
-        WHERE {{
-            ?s ?p <{node_uri}> .
-        }}
-    """)
-    results = endpoint.queryAndConvert()
-    degree += len(results["results"]["bindings"])
-
-    return degree
+from utils.yago_utils import get_yago_endpoint, compute_node_degree
 
 
 def main():

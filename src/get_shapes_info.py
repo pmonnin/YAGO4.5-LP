@@ -1,7 +1,6 @@
+import SPARQLWrapper
 import argparse
 import csv
-
-import SPARQLWrapper
 import tqdm
 
 from utils.logging_utils import get_logger

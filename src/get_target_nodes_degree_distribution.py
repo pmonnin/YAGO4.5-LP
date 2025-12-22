@@ -1,13 +1,12 @@
-import argparse
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import SPARQLWrapper
+import argparse
+import matplotlib.pyplot
+import seaborn
 import tqdm
 
-import seaborn
-import matplotlib.pyplot
-
 from utils.logging_utils import get_logger
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def compute_node_degree(node_uri: str) -> int:

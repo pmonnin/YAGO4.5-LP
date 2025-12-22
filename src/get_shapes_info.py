@@ -45,7 +45,7 @@ def main():
 
         for s in tqdm.tqdm(shapes):
             yago_endpoint.setQuery(f"""
-                SELECT (COUNT(*) AS ?targetNodes) 
+                SELECT (COUNT(DISTINCT ?s) AS ?targetNodes) 
                 WHERE
                 {{
                     ?s rdf:type/rdfs:subClassOf* <{s[0]}> .

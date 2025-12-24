@@ -81,12 +81,12 @@ def main():
         stat="count",
         edgecolor="white",
         linewidth=1,
-        log_scale=(True, False),  # log x-axis
+        log_scale=(True, True),
     )
 
     matplotlib.pyplot.xlabel("Node degree (log scale)")
     matplotlib.pyplot.ylabel("Count")
-    matplotlib.pyplot.title("Distribution of Node Degrees")
+    matplotlib.pyplot.title("Distribution of Node Degrees (log scale)")
 
     matplotlib.pyplot.tight_layout()
     matplotlib.pyplot.savefig(args.output_hist, format="pdf")
@@ -97,12 +97,13 @@ def main():
 
     seaborn.ecdfplot(
         target_node_degrees,
-        complementary=True
+        complementary=True,
+        log_scale=(True, True),
     )
 
     matplotlib.pyplot.xlabel("Node degree")
-    matplotlib.pyplot.ylabel("P(Degree ≥ x)")
-    matplotlib.pyplot.title("CCDF of Node Degrees")
+    matplotlib.pyplot.ylabel("P(Degree ≥ x) (log scale)")
+    matplotlib.pyplot.title("CCDF of Node Degrees (log scale)")
 
     matplotlib.pyplot.tight_layout()
     matplotlib.pyplot.savefig(args.output_ecdf, format="pdf")

@@ -73,7 +73,7 @@ def main():
     )
 
     # Histogram
-    matplotlib.pyplot.figure(figsize=(9, 5))
+    matplotlib.pyplot.figure(figsize=(9, 5), layout="constrained")
     seaborn.histplot(
         target_node_degrees,
         bins="auto",      # smart binning
@@ -93,7 +93,7 @@ def main():
     matplotlib.pyplot.close()
 
     # ECDF
-    matplotlib.pyplot.figure(figsize=(9, 5))
+    matplotlib.pyplot.figure(figsize=(9, 5), layout="constrained")
 
     seaborn.ecdfplot(
         target_node_degrees,

@@ -68,3 +68,38 @@ def compute_node_degree(node_uri: str) -> int:
     degree += len(results["results"]["bindings"])
 
     return degree
+
+
+def get_target_nodes(shape_uri: str) -> list[str]:
+    """
+        Retrieve all target nodes that are instances of a given SHACL shape in YAGO.
+
+        This function queries the YAGO SPARQL endpoint for all nodes whose type
+        matches or is a subclass of the provided shape URI. Each node URI is collected
+        into a list and returned.
+
+        A new SPARQLWrapper endpoint is created within the function to ensure thread safety.
+
+        :param shape_uri: The URI of the SHACL shape for which target nodes are retrieved.
+        :type shape_uri: str
+        :return: A list of node URIs that are instances of the given shape.
+        :rtype: list[str]
+        :raises SPARQLWrapper.SPARQLExceptions: If the SPARQL query fails, or the endpoint is unreachable.
+    """
+
+    yago_endpoint = get_yago_endpoint()
+    target_nodes = []
+
+    yago_endpoint.setQuery(f"""
+        SELECT DISTINCT ?targetNode 
+        WHERE
+        {{
+            ?targetNode rdf:type/rdfs:subClassOf* <{shape_uri}> .
+        }}
+    """)
+
+    results = yago_endpoint.queryAndConvert()
+    for r in results["results"]["bindings"]:
+        target_nodes.append(r["targetNode"]["value"])
+
+    return target_nodes

@@ -7,7 +7,7 @@ import tqdm
 
 from utils import yago_utils
 from utils.logging_utils import get_logger
-from utils.yago_utils import get_yago_endpoint, compute_node_degree
+from utils.yago_utils import get_yago_endpoint, compute_node_degree, get_target_nodes
 
 
 def main():
@@ -35,22 +35,10 @@ def main():
     target_node_degrees = []
 
     try:
-        target_nodes = []
+
 
         logger.info("Getting target nodes...")
-        yago_endpoint.setQuery(f"""
-            SELECT DISTINCT ?targetNode 
-            WHERE
-            {{
-                ?targetNode rdf:type/rdfs:subClassOf* <{args.shape_uri}> .
-            }}
-        """)
-
-        results = yago_endpoint.queryAndConvert()
-
-        for r in tqdm.tqdm(results["results"]["bindings"]):
-            target_nodes.append(r["targetNode"]["value"])
-
+        target_nodes = get_target_nodes(args.shape_uri)
         logger.info(f"Number of target nodes: {len(target_nodes)}")
 
         logger.info("Computing node degrees (multithreaded)...")
